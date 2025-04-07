@@ -1,0 +1,19 @@
+{
+  "name": "yourride-backend",
+  "version": "1.0.0",
+  "description": "Backend services for YourRide ride-sharing application",
+  "private": true,
+  "workspaces": [
+    "services/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "start": "docker-compose up",
+    "dev": "docker-compose up -d",
+    "down": "docker-compose down",
+    "setup": "node scripts/setup.js"
+  },
+  "keywords": ["ride-sharing", "backend", "microservices"],
+  "author": "",
+  "license": "ISC"
+}

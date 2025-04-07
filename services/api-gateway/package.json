@@ -1,0 +1,22 @@
+{
+  "name": "@yourride/api-gateway",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-http-proxy": "^1.6.3",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.9.0",
+    "@yourride/middleware": "^1.0.0",
+    "@yourride/common": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

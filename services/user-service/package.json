@@ -1,0 +1,20 @@
+{
+  "name": "@yourride/user-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "bcryptjs": "^2.4.3",
+    "@yourride/common": "^1.0.0",
+    "@yourride/models": "^1.0.0",
+    "@supabase/supabase-js": "^2.32.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

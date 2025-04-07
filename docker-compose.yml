@@ -1,0 +1,129 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: yourride
+      POSTGRES_PASSWORD: yourride_password
+      POSTGRES_DB: yourride_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - yourride_network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - yourride_network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - JWT_SECRET=your_jwt_secret
+      - USER_SERVICE_URL=http://user-service:3001
+      - RIDE_SERVICE_URL=http://ride-service:3002
+      - PAYMENT_SERVICE_URL=http://payment-service:3003
+      - LOCATION_SERVICE_URL=http://location-service:3004
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3005
+    depends_on:
+      - user-service
+      - ride-service
+      - payment-service
+      - location-service
+      - notification-service
+    networks:
+      - yourride_network
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - DATABASE_URL=postgres://yourride:yourride_password@postgres:5432/yourride_db
+      - JWT_SECRET=your_jwt_secret
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - yourride_network
+
+  ride-service:
+    build:
+      context: .
+      dockerfile: services/ride-service/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - DATABASE_URL=postgres://yourride:yourride_password@postgres:5432/yourride_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - yourride_network
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: services/payment-service/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - DATABASE_URL=postgres://yourride:yourride_password@postgres:5432/yourride_db
+      - STRIPE_SECRET_KEY=your_stripe_secret_key
+    depends_on:
+      - postgres
+    networks:
+      - yourride_network
+
+  location-service:
+    build:
+      context: .
+      dockerfile: services/location-service/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3004
+      - DATABASE_URL=postgres://yourride:yourride_password@postgres:5432/yourride_db
+      - REDIS_URL=redis://redis:6379
+      - GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - yourride_network
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3005
+      - DATABASE_URL=postgres://yourride:yourride_password@postgres:5432/yourride_db
+      - REDIS_URL=redis://redis:6379
+      - FCM_SERVER_KEY=your_fcm_server_key
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - yourride_network
+
+networks:
+  yourride_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,10 @@
+{
+  "name": "@yourride/common",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "uuid": "^9.0.0",
+    "joi": "^17.9.2",
+    "winston": "^3.10.0"
+  }
+}
