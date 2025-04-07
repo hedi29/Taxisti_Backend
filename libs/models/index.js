@@ -1,4 +1,4 @@
-// libs/models/index.js
+// libs/models/index.js (updated)
 const { Pool } = require('pg');
 const knex = require('knex');
 
@@ -24,7 +24,11 @@ module.exports = {
   User: require('./user'),
   Driver: require('./driver'),
   Ride: require('./ride'),
+  RideHistory: require('./ride_history'),
   Payment: require('./payment'),
+  PaymentMethod: require('./payment_method'),
   Rating: require('./rating'),
-  Notification: require('./notification')
+  Notification: require('./notification'),
+  Device: require('./device'),
+  DriverLocation: require('./driver_location')
 };
